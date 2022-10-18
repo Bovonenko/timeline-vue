@@ -1,22 +1,32 @@
 <template>
-	<user-form @create="createNewUser" />
-	<div class="wrapper">
-		<user-list :users="users" />
+	<div class="app">
+		<user-form @create="createNewUser" />
+		<div class="wrapper" v-if="!isUserLoading && !error && users.length > 0">
+			<user-list 
+				:users="users" 
+			/>
+		</div>
+		<my-spinner v-if="isUserLoading"/>
+		<my-error v-if="error"/>
+		<h2 v-if="!users.length > 0" class="text-center text-danger mt-5" >Users list is empty</h2>
 	</div>
-
+	
 </template>
 
 <script>
 import UserList from './components/UserList.vue' ;
 import UserForm from './components/UserForm.vue';
+import MySpinner from './components/UI/MySpinner.vue';
+import MyError from './components/UI/MyError.vue';
 
 export default {
   name: 'App',
-  components: { UserList, UserForm },
+  components: { UserList, UserForm, MySpinner, MyError },
   data() {
     return {
       users: [],
 	  isUserLoading: false,
+	  error: false
     }
   },
   methods: {
@@ -27,7 +37,9 @@ export default {
 
 			this.users = await res.json();
 		} catch (e) {
+			this.error = true;
 			alert('Error')
+
 		} finally {
 			this.isUserLoading = false;
 		}
@@ -68,7 +80,6 @@ body {
 	min-height: 100vh;
 	padding: 60px 15px;
 }
-
 
 .wrapper {
 	position: relative;
