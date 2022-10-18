@@ -8,7 +8,7 @@
 		</div>
 		<my-spinner v-if="isUserLoading"/>
 		<my-error v-if="error"/>
-		<h2 v-if="!users.length > 0" class="text-center text-danger mt-5" >Users list is empty</h2>
+		<h2 v-if="!users.length > 0 && !isUserLoading" class="text-center text-danger mt-5" >Users list is empty</h2>
 	</div>
 	
 </template>
